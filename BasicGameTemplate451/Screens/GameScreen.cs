@@ -26,8 +26,8 @@ namespace BasicGameTemplate451
         }
 
         //TODO create your global game variables here
-        int heroX, heroY, heroSize, heroSpeed, playerShotX, playerShotY, playerShotSize, playerShotSpeed, defaultShotSpeed, heroRec, playerShotRec;
-        int monX, monY, monSize, monSpeed, monRec, score;
+        int heroX, heroY, heroSize, heroSpeed, playerShotX, playerShotY, playerShotSize, playerShotSpeed, score, defaultShotSpeed, heroRec, playerShotRec;
+        int monX, monY, monSize, monSpeed, monRec, mon2X, mon2Y, mon2Size, mon2Speed, mon2Rec, mon3X, mon3Y, mon3Size, mon3Speed, mon3Rec,;
         SolidBrush heroBrush = new SolidBrush(Color.Black);
         SolidBrush shotBrush = new SolidBrush(Color.White);
 
@@ -50,6 +50,14 @@ namespace BasicGameTemplate451
             monY = 10;
             monSize = 30;
             monSpeed = 5;
+             mon2X = 70;
+            mon2Y = 10;
+            mon2Size = 30;
+            mon2Speed = 3;
+            mon3X = 20;
+            mon3Y = 10;
+            mon3Size = 30;
+            mon3Speed = 2;
 
             score = 1;
 
@@ -170,28 +178,70 @@ namespace BasicGameTemplate451
             }
 
 
-            if(monX == 20 && monY == 10)
+            monX = monX + monSpeed;
+            mon2X = mon2X + mon2Speed;
+            mon3X = mon3X + mon3Speed;
+            
+            if (monX > this.Width - monSize)
             {
-                monX =this.Width - monSpeed;
+                monSpeed *= -1;
+            }
+            else if (monX < 0)
+            {
+                monSpeed *= -1;
+            }
+            if (mon2X > this.Width - mon2Size)
+            {
+                mon2Speed *= -1;
+            }
+            else if (mon2X < 0)
+            {
+                mon2Speed *= -1;
             }
 
-
+            if (mon3X > this.Width - mon3Size)
+            {
+                mon3Speed *= -1;
+            }
+            else if (monX < 0)
+            {
+                mon3Speed *= -1;
+            }
             Rectangle playerShotRec = new Rectangle(playerShotX, playerShotY, playerShotSize, playerShotSpeed);
             Rectangle heroRec = new Rectangle(heroX, heroY, heroSize, heroSpeed);
             Rectangle monRec = new Rectangle(monX,monY,monSize,monSpeed);
+            Rectangle mon2Rec = new Rectangle(mon2X, mon2Y, mon2Size, mon2Speed);
+            Rectangle mon3Rec = new Rectangle(mon3X, mon3Y, mon3Size, mon3Speed);
+
+
 
             //TODO move npc characters
             //TODO move npc characters
-             if (playerShotRec.IntersectsWith(monRec))
+            //TODO collisions checks
+            if (playerShotRec.IntersectsWith(monRec))
+             {
+                scoreOutput.Text = score++ + "";
+
+                monX = -100;
+             
+             }
+
+            if (playerShotRec.IntersectsWith(mon2Rec))
             {
                 scoreOutput.Text = score++ + "";
-                   
-                
 
+                monX = -100;
+
+            }
+            if (playerShotRec.IntersectsWith(mon3Rec))
+            {
+                scoreOutput.Text = score++ + "";
+
+                mon3X = -100;
 
             }
 
-            //TODO collisions checks
+
 
 
 
@@ -206,7 +256,10 @@ namespace BasicGameTemplate451
             //draw rectangle to screen
             e.Graphics.FillRectangle(heroBrush, heroX, heroY, heroSize, heroSize);
             e.Graphics.FillRectangle(shotBrush, playerShotX, playerShotY, playerShotSize, playerShotSize);
+
             e.Graphics.FillRectangle(shotBrush, monX,monY,monSize, monSize);
+            e.Graphics.FillRectangle(shotBrush, mon2X, mon2Y, mon2Size, mon2Size);
+            e.Graphics.FillRectangle(shotBrush, mon3X, mon3Y, mon3Size, mon3Size);
         }
     }
 
